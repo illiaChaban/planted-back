@@ -6,8 +6,9 @@ const db = require('./db');
 const Router = require('express').Router;
 const router = new Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     res.send('hello');
+    
 })
 
 module.exports = router;
