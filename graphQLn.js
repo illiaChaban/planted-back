@@ -1,4 +1,5 @@
 const { graphql, buildSchema } = require('graphql');
+const { makeExecutableSchema } = require('graphql-tools');
 
 const db = require('./db');
 
@@ -26,7 +27,8 @@ userInfo().then(inf => {
 
 
 
-let schema = buildSchema(`
+
+let schema = (`
 	type Query {
 	  currentUser: User
 	}
@@ -53,29 +55,31 @@ let query = `
 	query {
 	  currentUser {
         username
-        avatar
-        userid
+        email
 		plantData {
             temp
-            sun
-            moist
-            ph
+
 		}
 	  }
 	}`
 
 let resolvers = {
-    currentUser: () => {
-        console.log('here')
-        return userInfo();
+    Query: {
+        currentUser: () => {
+            console.log('here')
+            return userInfo();
+        }
     },
     User: {
-        username: (p) => p.user.username,
+        username: (p) => {
+            console.log(p)
+            return p.user.username
+        },
         email: (p) => p.user.email,
         avatar: (p) => p.user.avatar,
         userid: (p) => p.user.userid,
         plantData: (p) => {
-            console.log(p)
+            // console.log(p)
             return p.plantData;
         },
     },
@@ -89,12 +93,26 @@ let resolvers = {
     }
 }
 
-let results = graphql({schema,
+
+// let resolvers = {
+//   currentUser: () => user,
+//   User: {
+//     userId: (parent) => parent.userId,
+//     repos: (parent) => parent.repos,
+//   },
+//   Repo: { name: (parent) =>  parent.name }
+// };
+
+
+let results = graphql({
+    schema: makeExecutableSchema({typeDefs: schema, resolvers}),
 	source: query,
 	rootValue: resolvers}
 )
-results.then( res => JSON.stringify(res))
-.then(console.log)
+results
+// .then( res => JSON.stringify(res))
+// .then( res => JSON.parse(res))
+// .then(console.log)
 
 
 // module.exports = {
