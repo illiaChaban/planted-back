@@ -12,7 +12,8 @@ CREATE TABLE plant_data (
     temp text,
     sun text,
     moist text,
-    ph text
+    ph text,
+    created timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'EDT')
 );
 
 INSERT INTO users VALUES(
@@ -75,4 +76,11 @@ INSERT INTO plant_data VALUES(
     '2.1'
 );
 
+INSERT INTO plant_data VALUES(
+    '2',
+    '78 F',
+    '1100 W/m2',
+    '17%',
+    '2.0'
+);
 

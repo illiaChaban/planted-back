@@ -66,7 +66,7 @@ let query = `
 
 let resolvers = {
     currentUser: () => {
-        console.log('here')
+        // console.log('here_gr')
         return userInfo();
     },
     User: {
@@ -75,7 +75,7 @@ let resolvers = {
         avatar: (p) => p.user.avatar,
         userid: (p) => p.user.userid,
         plantData: (p) => {
-            console.log(p)
+            // console.log('here_gr2')
             return p.plantData;
         },
     },
@@ -94,7 +94,7 @@ let results = graphql({schema,
 	rootValue: resolvers}
 )
 results.then( res => JSON.stringify(res))
-.then(console.log)
+// .then(console.log)
 
 
 // module.exports = {

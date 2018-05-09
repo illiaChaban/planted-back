@@ -1,43 +1,37 @@
-const { graphql, buildSchema } = require('graphql');
+const { graphql } = require('graphql');
 const { makeExecutableSchema } = require('graphql-tools');
-
 const db = require('./db');
 
-let plantData = db.query(`
-    SELECT * FROM plant_data
-    WHERE userid = '1';
-`)
-// plantData.then(console.log)
-
-let user = db.one(`
+let getUserById = (userid) => db.one(`
     SELECT * FROM users
-    WHERE userid = '1';
+    WHERE userid = '${userid}';
 `)
-// user.then(console.log)
 
-let userInfo = async () => {
-    let userI = await user;
-    let plantDataI = await plantData;
-    return { user: userI, plantData: plantDataI }
-};
+let getAllPlantData = (userid) => db.query(`
+    SELECT * FROM plant_data
+    WHERE userid = '${userid}';
+`)
 
-userInfo().then(inf => {
-    // console.log(inf)
-})
+// getUserById(1).then(console.log)
+// getAllPlantData(2).then(console.log)
 
 
 
 
-let schema = (`
+let typeDefs = (`
 	type Query {
-	  currentUser: User
+	  currentUser: Data
 	}
 	
-	type User {
+    type Data {
+        user: UserInfo
+        plantData: [PlantData]
+    }
+    
+    type UserInfo {
         username: String
         avatar: String
         userid: Int
-        plantData: [PlantData]
         email: String
     }
     
@@ -53,35 +47,34 @@ let schema = (`
 
 let query = `
 	query {
-	  currentUser {
-        username
-        email
-		plantData {
-            temp
+	  currentUser(userid: 1) {
 
-		}
 	  }
 	}`
 
 let resolvers = {
     Query: {
-        currentUser: () => {
-            console.log('here')
-            return userInfo();
+        currentUser: (parent, args, ctx) => {
+            console.log(parent)
+            // console.log(ctx.user)
+            return
         }
     },
-    User: {
-        username: (p) => {
-            console.log(p)
-            return p.user.username
+    Data: {
+        user: (userid) => {
+             return getUserById(userid)
         },
-        email: (p) => p.user.email,
-        avatar: (p) => p.user.avatar,
-        userid: (p) => p.user.userid,
-        plantData: (p) => {
+        plantData: (userid) => {
             // console.log(p)
-            return p.plantData;
+            return getUserById(userid);
         },
+    },
+
+    UserInfo: {
+        username: (p) => p.username,
+        avatar: (p) => p.avatar,
+        userid: (p) => p.userid,
+        email: (p) => p.email,
     },
 
     PlantData: {
@@ -103,19 +96,20 @@ let resolvers = {
 //   Repo: { name: (parent) =>  parent.name }
 // };
 
+let schema = makeExecutableSchema({typeDefs, resolvers})
+
 
 let results = graphql({
-    schema: makeExecutableSchema({typeDefs: schema, resolvers}),
+    schema,
 	source: query,
 	rootValue: resolvers}
 )
 results
-// .then( res => JSON.stringify(res))
+.then( res => JSON.stringify(res))
 // .then( res => JSON.parse(res))
-// .then(console.log)
+.then(console.log)
 
 
-// module.exports = {
-//     schema,
-//     resolvers,
-// }
+module.exports = {
+    schema
+}
