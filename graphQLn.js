@@ -15,9 +15,6 @@ let getAllPlantData = (userid) => db.query(`
 // getUserById(1).then(console.log)
 // getAllPlantData(2).then(console.log)
 
-
-
-
 let typeDefs = (`
 	type Query {
 	  currentUser: Data
@@ -47,27 +44,32 @@ let typeDefs = (`
 
 let query = `
 	query {
-	  currentUser(userid: 1) {
-
+	  currentUser {
+        user {
+            avatar
+            username
+        }
+        plantData {
+            temp
+            sun
+            moist
+            ph
+        }
 	  }
 	}`
 
 let resolvers = {
     Query: {
         currentUser: (parent, args, ctx) => {
-            console.log(parent)
+            console.log( 'currentUSER ######')
+
             // console.log(ctx.user)
-            return
+            return 1
         }
     },
     Data: {
-        user: (userid) => {
-             return getUserById(userid)
-        },
-        plantData: (userid) => {
-            // console.log(p)
-            return getUserById(userid);
-        },
+        user: (userid) => getUserById(userid),
+        plantData: (userid) => getAllPlantData(userid),
     },
 
     UserInfo: {
@@ -86,18 +88,7 @@ let resolvers = {
     }
 }
 
-
-// let resolvers = {
-//   currentUser: () => user,
-//   User: {
-//     userId: (parent) => parent.userId,
-//     repos: (parent) => parent.repos,
-//   },
-//   Repo: { name: (parent) =>  parent.name }
-// };
-
 let schema = makeExecutableSchema({typeDefs, resolvers})
-
 
 let results = graphql({
     schema,
@@ -107,7 +98,7 @@ let results = graphql({
 results
 .then( res => JSON.stringify(res))
 // .then( res => JSON.parse(res))
-.then(console.log)
+.then( res => console.log('CONSOLE #######', res))
 
 
 module.exports = {
