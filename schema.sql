@@ -3,8 +3,8 @@ CREATE TABLE users (
     username text,
     email text,
     passw text,
-    userid SERIAL UNIQUE,
-    avatar text DEFAULT 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzlDPRr1xSW0lukY2EmVpAx5Ye1S8H5luUVOK2IqFdcsjCDQxK'    
+    avatar text DEFAULT 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzlDPRr1xSW0lukY2EmVpAx5Ye1S8H5luUVOK2IqFdcsjCDQxK',
+    userid SERIAL UNIQUE    
 );
 
 CREATE TABLE plant_data (
@@ -12,7 +12,8 @@ CREATE TABLE plant_data (
     temp text,
     sun text,
     moist text,
-    ph text
+    ph text,
+    created timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'EDT')
 );
 
 INSERT INTO users VALUES(
@@ -75,4 +76,11 @@ INSERT INTO plant_data VALUES(
     '2.1'
 );
 
+INSERT INTO plant_data VALUES(
+    '2',
+    '78 F',
+    '1100 W/m2',
+    '17%',
+    '2.0'
+);
 

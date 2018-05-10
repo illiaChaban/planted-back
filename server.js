@@ -1,13 +1,18 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
-let router = require('./router');
+const router = require('./router');
+// const {  schema } = require('./graphQLn');
+// const bodyParser = require('body-parser');
+// const { graphqlExpress } = require('apollo-server-express');
+
 // const urlencoded = require('body-parser').urlencoded;
 
 const app = express();
 // app.use(urlencoded({ extended: false }));
 app.use(cors());
 app.use(router);
+// app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
 
 const server = http.createServer(app)
 
