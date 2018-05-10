@@ -53,7 +53,6 @@ let typeDefs = (`
     }
 
     input AddData {
-        userid: ID!
         temp: Float
         sun: Float
         moist: Float
@@ -84,9 +83,8 @@ let typeDefs = (`
 
 let resolvers = {
     Query: {
-        currentUser: (parent, args, ctx) => {
-            // console.log( 'currentUSER ######', ctx)
-            return args.userid
+        currentUser: (parent, args, userid) => {
+            return userid
         }
     },
     Data: {
@@ -110,7 +108,7 @@ let resolvers = {
     },
 
     Mutation: {
-        createUser: async (parent, args, ctx) => {
+        createUser: async (parent, args) => {
             let {username, email, avatar, passw} = args.input
             let hash = await bcrypt.hash(passw, 10);
             // no avatar ==> insert default
@@ -129,8 +127,8 @@ let resolvers = {
             `)
             return insert[0];
         },
-        addPlantData: async (parent, args, ctx) => {
-            let { userid, temp, sun, moist, ph} = args.input;
+        addPlantData: async (parent, args, userid) => {
+            let { temp, sun, moist, ph} = args.input;
             //no data ==> insert 0
             temp ? {} : temp = 0;
             sun ? {} : sun = 0;
@@ -157,11 +155,12 @@ let resolvers = {
 
 let schema = makeExecutableSchema({typeDefs, resolvers})
 
-let getResults = async (query) => {
+let getResults = async (query, userid) => {
     let results = await graphql({
         schema,
         source: query,
-        rootValue: resolvers}
+        rootValue: resolvers,
+        contextValue: userid}
     ).then( res => JSON.stringify(res));
     return results
 }

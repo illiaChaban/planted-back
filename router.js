@@ -16,9 +16,8 @@ router.post('/graphql', async (req,res) => {
     try{
         let payload = jwt.verify(token, signature);
         let userid = payload.userid;
-        let queryNoUser = await readBody(req)
-        let query = queryNoUser.split('currentUser').join(`currentUser(userid: ${userid})`)
-        let results = await getResults(query);
+        let query = await readBody(req)
+        let results = await getResults(query, userid);
         res.send(results)
     } catch(err) {
         console.log("POST GRAPHQL - ERROR ####", err)
