@@ -79,7 +79,7 @@ let typeDefs = (`
 //             username  
 //         } 
 //     }
-`   
+// `   
 // let query = "query { currentUser(userid: 2) { user { username avatar } plantData { temp sun moist ph } } }"
 
 let resolvers = {
