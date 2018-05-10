@@ -7,6 +7,9 @@ const Router = require('express').Router;
 const router = new Router();
 const { getResults } = require('./graphQL');
 
+router.post('/login', async (req,res) => {
+    postTokens(req, res, db)
+})
 
 router.post('/register', async (req,res) => {
     let userInfo = await readBody(req).then(data => JSON.parse(data))
@@ -40,7 +43,7 @@ router.post('/graphql', async (req,res) => {
     try{
         let payload = jwt.verify(token, signature);
         let userid = payload.userid;
-        let queryNoUser = await readBody(req).then( req => JSON.parse(req).query)
+        let queryNoUser = await readBody(req)
         let query = queryNoUser.split('currentUser').join(`currentUser(userid: ${userid})`)
         let results = await getResults(query);
         res.send(results)
