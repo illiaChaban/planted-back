@@ -5,20 +5,25 @@ let {postTokens, signature, createToken} = require('./lib/tokens');
 const db = require('./db');
 const Router = require('express').Router;
 const router = new Router();
-const bodyParser = require('body-parser');
-const { graphqlConnect } = require('apollo-server-express') ;
-// const { schema } = require('./graphQL');
-const {  schema } = require('./graphQLn')
 
-
-
-router.post('/graphql', bodyParser.json());
-router.get('/graphql', graphqlConnect({ schema }));
+const { getResults } = require('./graphQL');
+// const { graphqlExpress } = require('apollo-server-express');
 
 
 router.get('/', async (req, res) => {
     res.send('hello');
     
+})
+
+router.get('/graphql', (req, res) => {
+    // console.log(req)
+    // graphqlExpress({ schema })
+});
+
+router.post('/graphql', async (req,res) => {
+    let query = await readBody(req).then( req => JSON.parse(req).query)
+    let results = await getResults(query);
+    res.send(results)
 })
 
 router.post('/addData', async (req,res) => {

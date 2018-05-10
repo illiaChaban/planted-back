@@ -1,41 +1,34 @@
-const { graphql, buildSchema } = require('graphql');
-
+const { graphql } = require('graphql');
+const { makeExecutableSchema } = require('graphql-tools');
 const db = require('./db');
 
-let plantData = db.query(`
-    SELECT * FROM plant_data
-    WHERE userid = '1';
-`)
-// plantData.then(console.log)
-
-let user = db.one(`
+let getUserById = (userid) => db.one(`
     SELECT * FROM users
-    WHERE userid = '1';
+    WHERE userid = ${userid};
 `)
-// user.then(console.log)
 
-let userInfo = async () => {
-    let userI = await user;
-    let plantDataI = await plantData;
-    return { user: userI, plantData: plantDataI }
-};
+let getAllPlantData = (userid) => db.query(`
+    SELECT * FROM plant_data
+    WHERE userid = ${userid};
+`)
 
-userInfo().then(inf => {
-    // console.log(inf)
-})
+// getUserById(1).then(console.log)
+// getAllPlantData(2).then(console.log)
 
-
-
-let schema = buildSchema(`
+let typeDefs = (`
 	type Query {
-	  currentUser: User
+	  currentUser(userid: Int): Data
 	}
 	
-	type User {
+    type Data {
+        user: UserInfo
+        plantData: [PlantData]
+    }
+    
+    type UserInfo {
         username: String
         avatar: String
         userid: Int
-        plantData: [PlantData]
         email: String
     }
     
@@ -47,37 +40,44 @@ let schema = buildSchema(`
         ph: String
     }
 
+
 `)
 
 let query = `
 	query {
-	  currentUser {
-        username
-        avatar
-        userid
-		plantData {
+	  currentUser(userid: 2) {
+        user {
+            username
+            avatar
+        }
+        plantData {
             temp
             sun
             moist
             ph
-		}
+        }
 	  }
-	}`
+    }`
+    
+// let query = "query { currentUser(userid: 2) { user { username avatar } plantData { temp sun moist ph } } }"
 
 let resolvers = {
-    currentUser: () => {
-        // console.log('here_gr')
-        return userInfo();
+    Query: {
+        currentUser: (parent, args, ctx) => {
+            console.log( 'currentUSER ######', ctx)
+            return args.userid
+        }
     },
-    User: {
-        username: (p) => p.user.username,
-        email: (p) => p.user.email,
-        avatar: (p) => p.user.avatar,
-        userid: (p) => p.user.userid,
-        plantData: (p) => {
-            // console.log('here_gr2')
-            return p.plantData;
-        },
+    Data: {
+        user: (userid) => getUserById(userid),
+        plantData: (userid) => getAllPlantData(userid),
+    },
+
+    UserInfo: {
+        username: (p) => p.username,
+        avatar: (p) => p.avatar,
+        userid: (p) => p.userid,
+        email: (p) => p.email,
     },
 
     PlantData: {
@@ -89,15 +89,20 @@ let resolvers = {
     }
 }
 
-let results = graphql({schema,
-	source: query,
-	rootValue: resolvers}
-)
-results.then( res => JSON.stringify(res))
-// .then(console.log)
+let schema = makeExecutableSchema({typeDefs, resolvers})
+
+let getResults = async (query) => {
+    let results = await graphql({
+        schema,
+        source: query,
+        rootValue: resolvers}
+    ).then( res => JSON.stringify(res));
+    return results
+}
+
+// getResults(query).then(console.log)
 
 
-// module.exports = {
-//     schema,
-//     resolvers,
-// }
+module.exports = {
+    getResults
+}
