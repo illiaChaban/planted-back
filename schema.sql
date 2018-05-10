@@ -9,10 +9,10 @@ CREATE TABLE users (
 
 CREATE TABLE plant_data (
     userid SERIAL,    
-    temp text,
-    sun text,
-    moist text,
-    ph text,
+    temp FLOAT,
+    sun FLOAT,
+    moist FLOAT,
+    ph FLOAT,
     created timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'EDT')
 );
 
@@ -29,58 +29,58 @@ INSERT INTO users VALUES(
 );
 
 INSERT INTO plant_data VALUES(
-    '1',
-    '75 F',
-    '1050 W/m2',
-    '20%',
-    '5'
+    1,
+    75,
+    1050,
+    20,
+    5
 );
 
 INSERT INTO plant_data VALUES(
-    '1',
-    '72 F',
-    '900 W/m2',
-    '22%',
-    '4.8'
+    1,
+    72,
+    900,
+    22,
+    4.8
 );
 
 INSERT INTO plant_data VALUES(
-    '1',
-    '50 F',
-    '700 W/m2',
-    '23%',
-    '4.7'
+    1,
+    50,
+    700,
+    23,
+    4.7
 );
 
 INSERT INTO plant_data VALUES(
-    '2',
-    '62 F',
-    '950 W/m2',
-    '15%',
-    '2'
+    2,
+    62,
+    950,
+    15,
+    2
 );
 
 INSERT INTO plant_data VALUES(
-    '2',
-    '70 F',
-    '1050 W/m2',
-    '15%',
-    '2.3'
+    2,
+    70,
+    1050,
+    15,
+    2.3
 );
 
 INSERT INTO plant_data VALUES(
-    '2',
-    '80 F',
-    '1200 W/m2',
-    '16%',
-    '2.1'
+    2,
+    80,
+    1200,
+    16,
+    2.1
 );
 
 INSERT INTO plant_data VALUES(
-    '2',
-    '78 F',
-    '1100 W/m2',
-    '17%',
-    '2.0'
+    2,
+    78,
+    1100,
+    17,
+    2.0
 );
 
