@@ -3,8 +3,8 @@ CREATE TABLE users (
     username text,
     email text,
     passw text,
-    userid SERIAL UNIQUE,
-    avatar text DEFAULT 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzlDPRr1xSW0lukY2EmVpAx5Ye1S8H5luUVOK2IqFdcsjCDQxK'    
+    avatar text DEFAULT 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzlDPRr1xSW0lukY2EmVpAx5Ye1S8H5luUVOK2IqFdcsjCDQxK',
+    userid SERIAL UNIQUE    
 );
 
 CREATE TABLE plant_data (

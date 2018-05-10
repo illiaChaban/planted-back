@@ -64,7 +64,7 @@ let query = `
 let resolvers = {
     Query: {
         currentUser: (parent, args, ctx) => {
-            console.log( 'currentUSER ######', ctx)
+            // console.log( 'currentUSER ######', ctx)
             return args.userid
         }
     },
