@@ -1,8 +1,8 @@
 examples of fetching data with graphql
 
-fetch('http://localhost:5000/graphql', {
+fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
 	headers: {
-	"authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjEsImlhdCI6MTUyNTk1NjMwNiwiZXhwIjoxNTI2NTYxMTA2fQ.2vFISgpV0d8AJ9H-ZHDyqqL08wkE5dvV4Nl6KINvJa4",
+	"authorization": token,
 },
 	method: 'POST',
 	body: `
@@ -23,9 +23,9 @@ fetch('http://localhost:5000/graphql', {
 })
 .then( res => res.json() ).then(console.log)
 
-fetch('http://localhost:5000/graphql', {
+fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
 	headers: {
-	"authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjEsImlhdCI6MTUyNTk1NjMwNiwiZXhwIjoxNTI2NTYxMTA2fQ.2vFISgpV0d8AJ9H-ZHDyqqL08wkE5dvV4Nl6KINvJa4",
+	"authorization": token,
 },
 	method: 'POST',
 	body: `
