@@ -66,7 +66,7 @@ let typeDefs = (`
 
 // let query = `
 //     mutation {
-//         addPlantData(input: {userid: 1 temp: 70 sun: 300 moist: 24 ph: 3.2  }) {
+//         addPlantData(input: {temp: 70 sun: 300 moist: 24 ph: 3.2  }) {
 //             userid
 //         } 
 //     }

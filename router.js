@@ -7,6 +7,10 @@ const Router = require('express').Router;
 const router = new Router();
 const { getResults } = require('./graphQL');
 
+router.get('/', (req,res) => {
+    res.send('hello')
+})
+
 router.post('/login', async (req, res) => {
     postTokens(req, res, db)
 })
