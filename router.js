@@ -21,7 +21,10 @@ router.post('/register', async (req, res) => {
     let hash = await bcrypt.hash(password, 10);
     avatar ?
         await db.query(`
-                INSERT INTO users VALUES (
+                INSERT INTO users (
+                    username, email, passw, avatar
+                )
+                VALUES (
                         '${username}',
                         '${email}',
                         '${hash}',
@@ -29,7 +32,10 @@ router.post('/register', async (req, res) => {
                 );`)
             .catch(err => console.log(err)) :
         await db.query(`
-                INSERT INTO users VALUES (
+                INSERT INTO users (
+                    username, email, passw
+                )
+                VALUES (
                         '${username}',
                         '${email}',
                         '${hash}'
