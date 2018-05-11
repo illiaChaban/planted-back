@@ -17,4 +17,4 @@ app.use(router);
 const server = http.createServer(app)
 
 console.log('HTTP server running at http://localhost:5000');
-server.listen(5000);
+server.listen(process.env.PORT || 5000);
