@@ -12,6 +12,7 @@
     "jsonwebtoken": "^8.2.1",
     "mongodb": "^3.0.7",
     "mongoose": "^5.0.17",
+    "pg": "^7.4.3",
     "pg-promise": "^8.4.3"
   }
 }
