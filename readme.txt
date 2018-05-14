@@ -17,11 +17,36 @@ fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
             sun
             moist
             ph
+            created
         }
 	  }
     }`
 })
 .then( res => res.json() ).then(console.log)
+
+#############
+
+fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
+	headers: {
+	"authorization": token,
+},
+	method: 'POST',
+	body: `
+    query { 
+        currentUser { 
+            getPlantDataFor(hours: 3) { 
+                temp 
+                sun 
+                moist 
+                ph 
+                created
+            } 
+        } 
+    }`
+})
+.then( res => res.json() ).then(console.log)
+
+###############
 
 fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
 	headers: {
@@ -37,3 +62,4 @@ fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
 `
 })
 .then( res => res.json() ).then(console.log)
+
