@@ -38,6 +38,7 @@ let typeDefs = (`
         sun: Float
         moist: Float
         ph: Float
+        created: String
     }
 
     type Mutation {
@@ -105,6 +106,7 @@ let resolvers = {
         sun: (p) => p.sun,
         moist: (p) => p.moist,
         ph: (p) => p.ph,
+        created: (p) => p.created.toISOString(),
     },
 
     Mutation: {
