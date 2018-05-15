@@ -54,7 +54,7 @@ let typeDefs = (`
         moist: Float
         humidity: Float
         created: String
-        dataid: Integer
+        dataid: Int
     }
 
     type Mutation {
