@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 
-const { graphql } = require('graphql');
-const { makeExecutableSchema } = require('graphql-tools');
+const { grahumidityql } = require('grahumidityql');
+const { makeExecutableSchema } = require('grahumidityql-tools');
 const db = require('./db');
 
 let getUserById = (userid) => db.one(`
@@ -52,8 +52,9 @@ let typeDefs = (`
         temp: Float
         sun: Float
         moist: Float
-        ph: Float
+        humidity: Float
         created: String
+        dataid: Integer
     }
 
     type Mutation {
@@ -72,7 +73,7 @@ let typeDefs = (`
         temp: Float
         sun: Float
         moist: Float
-        ph: Float
+        humidity: Float
     }
 
 
@@ -82,7 +83,7 @@ let typeDefs = (`
 
 // let query = `
 //     mutation {
-//         addPlantData(input: {userid: 1 temp: 70 sun: 300 moist: 24 ph: 3.2  }) {
+//         addPlantData(input: {userid: 1 temp: 70 sun: 300 moist: 24 humidity: 3.2  }) {
 //             userid
 //         } 
 //     }
@@ -106,7 +107,7 @@ let typeDefs = (`
 //                 temp 
 //                 sun 
 //                 moist 
-//                 ph 
+//                 humidity 
 //                 created
 //             } 
 //         } 
@@ -138,8 +139,9 @@ let resolvers = {
         temp: (p) => p.temp,
         sun: (p) => p.sun,
         moist: (p) => p.moist,
-        ph: (p) => p.ph,
+        humidity: (p) => p.humidity,
         created: (p) => p.created.toISOString(),
+        dataid: (p) => p.dataid,
     },
 
 
@@ -164,23 +166,23 @@ let resolvers = {
             return insert[0];
         },
         addPlantData: async (parent, args, userid) => {
-            let { temp, sun, moist, ph} = args.input;
+            let { temp, sun, moist, humidity} = args.input;
             //no data ==> insert 0
             temp ? {} : temp = 0;
             sun ? {} : sun = 0;
             moist ? {} : moist = 0;
-            ph ? {} : ph = 0;
+            humidity ? {} : humidity = 0;
 
             let insert = await db.query(`
                 INSERT INTO plant_data (
-                    userid, temp, sun, moist, ph
+                    userid, temp, sun, moist, humidity
                 )
                 VALUES (
                     '${userid}',
                     '${temp}',
                     '${sun}',
                     '${moist}',
-                    '${ph}'
+                    '${humidity}'
                 )
                 RETURNING *;
             `)
@@ -192,7 +194,7 @@ let resolvers = {
 let schema = makeExecutableSchema({typeDefs, resolvers})
 
 let getResults = async (query, userid) => {
-    let results = await graphql({
+    let results = await grahumidityql({
         schema,
         source: query,
         rootValue: resolvers,
