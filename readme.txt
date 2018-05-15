@@ -16,7 +16,7 @@ fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
             temp
             sun
             moist
-            ph
+            humidity
             created
         }
 	  }
@@ -38,7 +38,7 @@ fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
                 temp 
                 sun 
                 moist 
-                ph 
+                humidity 
                 created
             } 
         } 
@@ -55,7 +55,7 @@ fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
 	method: 'POST',
 	body: `
     mutation {
-        addPlantData(input: {temp: 70 sun: 300 moist: 24 ph: 3.2  }) {
+        addPlantData(input: {temp: 70 sun: 300 moist: 24 humidity: 3.2  }) {
             userid
         } 
     }
