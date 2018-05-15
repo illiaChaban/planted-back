@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 
-const { grahumidityql } = require('grahumidityql');
-const { makeExecutableSchema } = require('grahumidityql-tools');
+const { graphql } = require('graphql');
+const { makeExecutableSchema } = require('graphql-tools');
 const db = require('./db');
 
 let getUserById = (userid) => db.one(`
@@ -194,7 +194,7 @@ let resolvers = {
 let schema = makeExecutableSchema({typeDefs, resolvers})
 
 let getResults = async (query, userid) => {
-    let results = await grahumidityql({
+    let results = await graphql({
         schema,
         source: query,
         rootValue: resolvers,
