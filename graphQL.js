@@ -14,6 +14,19 @@ let getAllPlantData = (userid) => db.query(`
     WHERE userid = ${userid};
 `)
 
+let getPlantDataFor = (userid, hours) => {
+    let dateAfter = new Date();
+    dateAfter.setHours( dateAfter.getHours() - hours - 4) //EDT timezone
+    dateAfter = dateAfter.toISOString(); 
+    console.log('dateAFTER', dateAfter)
+
+    return db.query(`
+        SELECT * FROM plant_data
+        WHERE userid = ${userid}
+        AND created >= '${dateAfter}';
+`)}
+
+
 let typeDefs = (`
 	type Query {
 	  currentUser(userid: ID): Data
@@ -22,8 +35,10 @@ let typeDefs = (`
     type Data {
         user: UserInfo
         plantData: [PlantData]
+        getPlantDataFor(hours: Float): [PlantData]
     }
     
+
     type UserInfo {
         username: String
         avatar: String
@@ -38,6 +53,7 @@ let typeDefs = (`
         sun: Float
         moist: Float
         ph: Float
+        created: String
     }
 
     type Mutation {
@@ -66,7 +82,7 @@ let typeDefs = (`
 
 // let query = `
 //     mutation {
-//         addPlantData(input: {temp: 70 sun: 300 moist: 24 ph: 3.2  }) {
+//         addPlantData(input: {userid: 1 temp: 70 sun: 300 moist: 24 ph: 3.2  }) {
 //             userid
 //         } 
 //     }
@@ -79,7 +95,24 @@ let typeDefs = (`
 //         } 
 //     }
 // `   
-// let query = "query { currentUser(userid: 2) { user { username avatar } plantData { temp sun moist ph } } }"
+// let query = `
+//     query { 
+//         currentUser(userid: 1) { 
+//             user { 
+//                 username 
+//                 avatar 
+//             } 
+//             getPlantDataFor(hours: 3) { 
+//                 temp 
+//                 sun 
+//                 moist 
+//                 ph 
+//                 created
+//             } 
+//         } 
+//     }`
+
+
 
 let resolvers = {
     Query: {
@@ -90,6 +123,7 @@ let resolvers = {
     Data: {
         user: (userid) => getUserById(userid),
         plantData: (userid) => getAllPlantData(userid),
+        getPlantDataFor: (userid, args) => getPlantDataFor(userid, args.hours),
     },
 
     UserInfo: {
@@ -105,7 +139,9 @@ let resolvers = {
         sun: (p) => p.sun,
         moist: (p) => p.moist,
         ph: (p) => p.ph,
+        created: (p) => p.created.toISOString(),
     },
+
 
     Mutation: {
         createUser: async (parent, args) => {
