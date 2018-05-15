@@ -1,4 +1,4 @@
-examples of fetching data with grahumidityql
+examples of fetching data with graphql
 
 fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
 	headers: {
