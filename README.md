@@ -103,7 +103,7 @@ module.exports = router;
 
 ```javascript
 
-fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
+fetch('https://planted-dc.herokuapp.com/graphql', {
 	headers: {
 	"authorization": token,
 },
@@ -129,7 +129,7 @@ fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
 
 #############
 
-fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
+fetch('https://planted-dc.herokuapp.com/graphql', {
 	headers: {
 	"authorization": token,
 },
@@ -151,7 +151,7 @@ fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
 
 ###############
 
-fetch('https://radiant-anchorage-62389.herokuapp.com/graphql', {
+fetch('https://planted-dc.herokuapp.com/graphql', {
 	headers: {
 	"authorization": token,
 },
